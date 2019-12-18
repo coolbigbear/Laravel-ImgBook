@@ -7,28 +7,48 @@
 @endif
 
 @section('content')
-    @if ($update)
-        <form method="POST" action="{{ route('posts.update', ['id' => $post->id]) }}">
-            @csrf
-            <p>Title: <input type="text" name="title" 
-                value="{{$post->title}}"></p>
-            <p>Description: <input type="text" name="description" 
-                value="{{$post->description}}"></p>
-            <input type="submit" value="Update">
-            <a href="{{ route('posts.show', ['id' => $post->id]) }}">Cancel</a>
-            <br>
-            <img src="{{ asset($post->image->image) ?? 'No Image'}}"></li>
-        </form>
-    @else
-        <form method="POST" action="{{ route('posts.store') }}" enctype="multipart/form-data">
-            @csrf
-            <p>Title: <input type="text" name="title" 
-                value="{{ old('title') }}"></p>
-            <input type="file" name="image">
-            <p>Description: <input type="text" name="description" 
-                value="{{ old('description') }}"></p>
-            <input type="submit" value="Submit">
-            <a href="{{ route('posts.index') }}">Cancel</a>
-        </form>
-    @endif
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            @if ($update)
+                <div class="alert alert-warning">
+                    <strong>Warning!</strong>
+                    <br>
+                    To change the picture please delete the post and repost it.
+                </div>
+                <form method="POST" action="{{ route('posts.update', ['id' => $post->id]) }}">
+                    @csrf
+                    <div class="form-group">
+                            <label>Title</label>
+                            <input type="text" name="title" class="form-control" placeholder="Enter title" value="{{$post->title}}">
+                    </div>
+                    <div class="form-group">
+                            <label>Description</label>
+                            <input type="textarea" name="description" class="form-control" placeholder="Enter description" value="{{$post->description}}">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    <a class="btn btn-danger" href="{{ route('posts.show', ['id' => $post->id]) }}">Cancel</a>
+                    <div>&nbsp;</div> {{-- add single space --}}
+                    <img class="img-fluid" src="{{ asset($post->image->image) ?? 'No Image'}}"></li>
+                </form>
+            @else
+                <form method="POST" action="{{ route('posts.store') }}" enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" name="title" class="form-control" placeholder="Enter title" value="{{ old('title') }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlFile1">Attach image to your post</label>
+                        <input type="file" name="image" class="form-control-file" value="{{ old('image') }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <input type="textarea" name="description" class="form-control" placeholder="Enter description" value="{{ old('description') }}">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <a class="btn btn-danger" href="{{ route('posts.index') }}">Cancel</a>
+                </form>
+            @endif
+        </div>
+    </div>
 @endsection

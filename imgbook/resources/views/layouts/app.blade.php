@@ -22,7 +22,7 @@
 <body> 
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
+            <div class="container-fluid">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'ImgBook') }}
                 </a>
@@ -73,20 +73,31 @@
         </nav>
 
         <main class="py-4">
-            @yield('title')
-            @if (session('message'))
-                <p><b>{{ session('message')}}</b></p>
-            @endif
-            @if ($errors->any())
-            <div>
-                Errors:
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error}}</li>
-                    @endforeach
-                </ul>
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <h1>@yield('title')</h1>
+                    @yield('back')
+                    @if (session('message'))
+                        <div>&nbsp;</div> {{-- add single space --}}
+                        <div class="alert alert-success alert-dismissible">
+                            <b>{{ session('message')}}</b>
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        </div>
+                    @endif
+                    @if ($errors->any())
+                        <div>&nbsp;</div> {{-- add single space --}}
+                        <div class="alert alert-danger">
+                            <strong>Errors:</strong>
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error}}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                </div>
             </div>
-        @endif
+            <div>&nbsp;</div> {{-- add single space --}}
             @yield('content')
         </main>
     </div>
