@@ -1,5 +1,10 @@
 <?php
 
+app()->singleton('App\Profanity', function ($app) {
+    return new Profanity();
+});
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
