@@ -4,7 +4,7 @@
             <label><b>{{ commentMessage }}</b></label>
             <div class="input-group">
                 <input type="textarea" name="text" class="form-control" placeholder="Enter a comment" v-model="newComment">
-                <br>
+                <div>&nbsp;</div> <!-- add single space -->
                 <button class="btn btn-primary" @click="createComment">{{changeOrPost}}</button>
             </div>
         </div>

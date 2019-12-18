@@ -1865,6 +1865,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['postId', 'userId'],
   data: function data() {
@@ -37372,6 +37373,8 @@ var render = function() {
               }
             }
           }),
+          _vm._v(" "),
+          _c("div", [_vm._v(" ")]),
           _vm._v(" "),
           _c(
             "button",
