@@ -21,17 +21,19 @@
 </head>
 <body> 
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'ImgBook') }}
-                </a>
-                @auth
-                    <form class="form-inline" method="GET" action="{{ route('posts.create') }}">
-                        @csrf
-                        <button class="btn btn-sm btn-primary" type="submit">New Post</button>
-                    </form>
-                @endauth
+        <nav class="navbar sticky-top navbar-light bg-white shadow-sm">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <a class="navbar-brand" href="{{ url('/') }}">
+                        {{ config('app.name', 'ImgBook') }}
+                    </a>
+                    @auth
+                        <form class="form-inline" method="GET" action="{{ route('posts.create') }}">
+                            @csrf
+                            <button class="btn btn-sm btn-primary" type="submit">New Post</button>
+                        </form>
+                    @endauth
+                </div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
