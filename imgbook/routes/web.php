@@ -1,7 +1,9 @@
 <?php
 
+use App\Profanity;
+
 app()->singleton('App\Profanity', function ($app) {
-    return new Profanity();
+    return new Profanity('https://www.purgomalum.com/service/');
 });
 
 

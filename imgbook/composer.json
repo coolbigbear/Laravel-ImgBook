@@ -8,9 +8,9 @@
     ],
     "license": "MIT",
     "require": {
-        "guzzlehttp/guzzle": "~6.0",
         "php": "^7.2",
         "fideloper/proxy": "^4.0",
+        "guzzlehttp/guzzle": "^6.5",
         "laravel/framework": "^6.0",
         "laravel/tinker": "^1.0",
         "laravel/ui": "^1.1"

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
+use App\Profanity;
 use App\Comment;
 use App\Image;
 use App\Post;
@@ -54,10 +56,12 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Profanity $p)
     {
         $validatedData = $this->validateRequest($request);
         
+        $profanity = $p->checkProfanity($validatedData['title']);
+
         $image = $validatedData['image'];
 
         $a = new Post;

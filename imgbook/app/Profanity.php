@@ -1,16 +1,21 @@
 <?php
 
+namespace App;
+
+// require_once '../vendor/autoload.php';
 use GuzzleHttp\Client;
 
 class Profanity
 {
-    private $baseLink = "https://www.purgomalum.com/service/json?text=";
+    private $client;
 
-    public function __construct() {
-
+    public function __construct($uri) {
+        $this->client = new Client([
+            'base_uri' => $uri,
+        ]);
     }
 
     public function checkProfanity($text) {
-        $client->request('GET', $baseLink + $text);
+        return $this->client->request('GET', 'containsprofanity?text=' . $text);
     }
 }
