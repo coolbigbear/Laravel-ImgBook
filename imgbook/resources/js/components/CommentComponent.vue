@@ -73,7 +73,7 @@
                 })
                 .then(response => {
                     //success
-                    this.comments.push(response.data);
+                    this.comments.unshift(response.data);
                     this.newComment = '';
                     this.error = '';
                 })
@@ -94,7 +94,7 @@
                 })
                 .then(response => {
                     //success
-                    this.comments.push(response.data);
+                    this.comments.unshift(response.data);
                     this.commentMessage = "Post a comment";
                     this.changeOrPost = "Post";
                     this.commentIdBeingEdited = null;

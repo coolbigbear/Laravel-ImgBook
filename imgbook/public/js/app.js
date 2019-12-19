@@ -1913,7 +1913,7 @@ __webpack_require__.r(__webpack_exports__);
         user_id: this.userId
       }).then(function (response) {
         //success
-        _this2.comments.push(response.data);
+        _this2.comments.unshift(response.data);
 
         _this2.newComment = '';
         _this2.error = '';
@@ -1935,16 +1935,17 @@ __webpack_require__.r(__webpack_exports__);
         text: this.newComment
       }).then(function (response) {
         //success
-        _this3.comments.push(response.data);
+        _this3.comments.unshift(response.data);
 
         _this3.commentMessage = "Post a comment";
         _this3.changeOrPost = "Post";
         _this3.commentIdBeingEdited = null;
+        _this3.error = '';
 
         _this3.fetchComments();
-      })["catch"](function (response) {
+      })["catch"](function (error) {
         //failure
-        console.log(response);
+        _this3.error = error.response.data.error;
       });
     }
   }
