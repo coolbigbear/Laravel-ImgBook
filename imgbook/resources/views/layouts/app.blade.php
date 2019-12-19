@@ -26,6 +26,12 @@
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'ImgBook') }}
                 </a>
+                @auth
+                    <form class="form-inline" method="GET" action="{{ route('posts.create') }}">
+                        @csrf
+                        <button class="btn btn-sm btn-primary" type="submit">New Post</button>
+                    </form>
+                @endauth
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
