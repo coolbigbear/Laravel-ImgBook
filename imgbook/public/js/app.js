@@ -1890,6 +1890,7 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get("/comments/" + this.postId).then(function (response) {
         //success
+        console.log(response.data);
         _this.comments = response.data;
         _this.newComment = '';
       })["catch"](function (response) {
@@ -1935,14 +1936,12 @@ __webpack_require__.r(__webpack_exports__);
         text: this.newComment
       }).then(function (response) {
         //success
-        _this3.comments.unshift(response.data);
+        _this3.fetchComments();
 
         _this3.commentMessage = "Post a comment";
         _this3.changeOrPost = "Post";
         _this3.commentIdBeingEdited = null;
         _this3.error = '';
-
-        _this3.fetchComments();
       })["catch"](function (error) {
         //failure
         _this3.error = error.response.data.error;
@@ -37407,7 +37406,7 @@ var render = function() {
             _vm._v(_vm._s(comment.user.username))
           ]),
           _vm._v(" "),
-          _c("p", [_c("small", [_vm._v(_vm._s(comment.updated_at))])]),
+          _c("small", [_vm._v(_vm._s(comment.created_at))]),
           _vm._v(" "),
           _c("div", { staticClass: "container" }, [
             _c("div", { staticClass: "row" }, [

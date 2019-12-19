@@ -4,7 +4,6 @@
 
 use App\Post;
 use App\User;
-use App\Image;
 use Faker\Generator as Faker;
 
 $factory->define(Post::class, function (Faker $faker) {

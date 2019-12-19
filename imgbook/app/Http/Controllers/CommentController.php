@@ -32,7 +32,7 @@ class CommentController extends Controller
      */
     public function apiIndexByPost($id)
     {
-        $comments = Comment::where('post_id', $id)->orderBy('updated_at', 'desc')->get();
+        $comments = Comment::where('post_id', $id)->orderBy('created_at', 'desc')->get();
         $comments->load('user');
         return $comments;
     }

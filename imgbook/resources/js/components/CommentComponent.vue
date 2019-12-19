@@ -14,7 +14,7 @@
         <hr/>
         <div v-for="comment in comments" :key="comment.id">
             <h4 class="media-heading user_name">{{ comment.user.username }}</h4>
-            <p><small>{{ comment.updated_at }}</small></p>
+            <small>{{ comment.created_at }}</small>
             <div class="container">
                 <div class="row">
                     <div class="col">
@@ -50,6 +50,7 @@
                 axios.get("/comments/" + this.postId)
                 .then(response => {
                     //success
+                    console.log(response.data);
                     this.comments = response.data;
                     this.newComment = '';
                 })
@@ -94,12 +95,11 @@
                 })
                 .then(response => {
                     //success
-                    this.comments.unshift(response.data);
+                    this.fetchComments();
                     this.commentMessage = "Post a comment";
                     this.changeOrPost = "Post";
                     this.commentIdBeingEdited = null;
                     this.error = '';
-                    this.fetchComments();
                 })
                 .catch(error => {
                     //failure

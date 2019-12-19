@@ -11,6 +11,11 @@
         <div class="col-md-8">
             <div class="card">
                 <img src="{{ asset($post->image->image) }}" class="card-img-top">
+                <div class="card-footer text-muted">
+                    @foreach ($post->tags as $tag)
+                        {{ $tag->tag}} |
+                    @endforeach
+                </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
