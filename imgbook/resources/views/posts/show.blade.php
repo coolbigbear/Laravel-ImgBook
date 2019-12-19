@@ -17,7 +17,7 @@
                             <small class="text-muted">Posted by: {{ $post->user->username }}</small>
                             <h5 class="card-title">{{ $post->title }}</h5>
                         </div>
-                        @if ($post->user_id == $user_id)
+                        @if ($post->user_id == Auth::user()->id)
                             <div class="col-md-auto">
                                 <form method="GET"
                                     action="{{ route('posts.edit', ['id' => $post->id]) }}">
@@ -27,7 +27,7 @@
                             </div>
                             <div class="col-md-auto">
                                 <form method="POST"
-                                    action="{{ route('posts.destroy', ['user_id' => $user_id, 'id' => $post->id]) }}">
+                                    action="{{ route('posts.destroy', ['user_id' => Auth::user()->id, 'id' => $post->id]) }}">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-danger" type="submit">Delete</button>

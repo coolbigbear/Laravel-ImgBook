@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
+use App\Profanity;
 use App\Comment;
+use App\Post;
 
 class CommentController extends Controller
 {
@@ -50,10 +53,26 @@ class CommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function apiStore(Request $request)
+    public function apiStore(Request $request, Profanity $p)
     {
 
         $request = $this->validateStoreRequest($request);
+
+        $profanity = $p->checkProfanity($request['text']);
+
+        $profanity = (string) $profanity->getBody();
+        if($profanity === 'true') {
+            $profanity = true;
+        } else {
+            $profanity = false;
+        }
+
+        if($profanity) {
+            $errors = array(
+                'error' => 'Profanity detected'
+            );
+            return response($errors,400);
+        }
 
         $c = new Comment;
         $c->text = $request['text'];
@@ -94,15 +113,30 @@ class CommentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, Profanity $p)
     {
 
         $request =  $this->validateUpdateRequest($request);
 
+        $profanity = $p->checkProfanity($request['text']);
+
+        $profanity = (string) $profanity->getBody();
+        if($profanity === 'true') {
+            $profanity = true;
+        } else {
+            $profanity = false;
+        }
+
+        if($profanity) {
+            $errors = array(
+                'error' => 'Profanity detected'
+            );
+            return $errors;
+        }
+
         $comment = Comment::findOrFail($id);
         $comment->text = $request['text'];
         $comment->save();
-        $comment = Comment::findOrFail($id);
 
         return $comment;
     }

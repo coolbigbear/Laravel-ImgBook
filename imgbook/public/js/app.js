@@ -1866,11 +1866,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['postId', 'userId'],
   data: function data() {
     return {
       comments: [],
+      error: '',
       newComment: '',
       commentMessage: 'Post a comment',
       changeOrPost: 'Post',
@@ -1888,7 +1892,6 @@ __webpack_require__.r(__webpack_exports__);
         //success
         _this.comments = response.data;
         _this.newComment = '';
-        console.log(response.data);
       })["catch"](function (response) {
         //failure
         console.log(response);
@@ -1913,9 +1916,10 @@ __webpack_require__.r(__webpack_exports__);
         _this2.comments.push(response.data);
 
         _this2.newComment = '';
-      })["catch"](function (response) {
+        _this2.error = '';
+      })["catch"](function (error) {
         //failure
-        console.log(response);
+        _this2.error = error.response.data.error;
       });
     },
     editCommentButton: function editCommentButton(comment) {
@@ -37345,6 +37349,13 @@ var render = function() {
     { attrs: { id: "root" } },
     [
       _c("div", { staticClass: "form-group" }, [
+        _vm.error
+          ? _c("div", { staticClass: "alert alert-danger" }, [
+              _c("strong", [_vm._v("Error")]),
+              _vm._v(" " + _vm._s(_vm.error) + "\n        ")
+            ])
+          : _vm._e(),
+        _vm._v(" "),
         _c("label", [_c("b", [_vm._v(_vm._s(_vm.commentMessage))])]),
         _vm._v(" "),
         _c("div", { staticClass: "input-group" }, [

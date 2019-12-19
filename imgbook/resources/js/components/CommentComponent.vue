@@ -1,6 +1,9 @@
 <template>
     <div id="root">
         <div class="form-group">
+            <div class="alert alert-danger" v-if="error">
+                <strong>Error</strong> {{error}}
+            </div>
             <label><b>{{ commentMessage }}</b></label>
             <div class="input-group">
                 <input type="textarea" name="text" class="form-control" placeholder="Enter a comment" v-model="newComment">
@@ -32,6 +35,7 @@
         data() {
             return {
                 comments: [],
+                error: '',
                 newComment: '',
                 commentMessage: 'Post a comment',
                 changeOrPost: 'Post',
@@ -48,7 +52,6 @@
                     //success
                     this.comments = response.data;
                     this.newComment = '';
-                    console.log(response.data);
                 })
                 .catch(response => {
                     //failure
@@ -72,10 +75,11 @@
                     //success
                     this.comments.push(response.data);
                     this.newComment = '';
+                    this.error = '';
                 })
-                .catch(response => {
+                .catch(error => {
                     //failure
-                    console.log(response);
+                    this.error = error.response.data.error;
                 })
             },
             editCommentButton: function (comment) {
@@ -94,11 +98,12 @@
                     this.commentMessage = "Post a comment";
                     this.changeOrPost = "Post";
                     this.commentIdBeingEdited = null;
+                    this.error = '';
                     this.fetchComments();
                 })
-                .catch(response => {
+                .catch(error => {
                     //failure
-                    console.log(response);
+                    this.error = error.response.data.error;
                 })
             }
         }

@@ -60,7 +60,21 @@ class PostController extends Controller
     {
         $validatedData = $this->validateRequest($request);
         
-        $profanity = $p->checkProfanity($validatedData['title']);
+        $profanity = $p->checkProfanity($validatedData['title'].$validatedData['description']);
+
+        $profanity = (string) $profanity->getBody();
+        if($profanity === 'true') {
+            $profanity = true;
+        } else {
+            $profanity = false;
+        }
+
+        if($profanity) {
+            $errors = array(
+                'message' => 'Profanity detected'
+            );
+            return view('posts.create', ['update' => False])->withErrors($errors);
+        }
 
         $image = $validatedData['image'];
 
@@ -118,10 +132,28 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, Profanity $p)
     {
         $request =  $this->validateUpdateRequest($request);
+
+        $profanity = $p->checkProfanity($request['title'].$request['description']);
+
         $post = Post::findOrFail($id);
+
+        $profanity = (string) $profanity->getBody();
+        if($profanity === 'true') {
+            $profanity = true;
+        } else {
+            $profanity = false;
+        }
+
+        if($profanity) {
+            $errors = array(
+                'message' => 'Profanity detected'
+            );
+            return view('posts.create', ['update' => true, 'post' => $post])->withErrors($errors);
+        }
+
         $post->title = $request['title'];
         $post->description = $request['description'];
         $post->save();
@@ -139,7 +171,6 @@ class PostController extends Controller
      */
     public function destroy($userId, $id)
     {
-
         $post = Post::findOrFail($id);
 
         if($post->user_id == $userId) {
