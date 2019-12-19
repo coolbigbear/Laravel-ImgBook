@@ -15,7 +15,7 @@ class UserTableSeeder extends Seeder
         $a = new User;
         $a->username = "coolbigbear";
         $a->email = "coolbigbear@gmail.com";
-        $a->password = "coolbigbearpassword";
+        $a->password = bcrypt('password');
         $a->email_verified_at = now();
         $a->save();
 

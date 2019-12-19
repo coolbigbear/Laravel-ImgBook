@@ -12,6 +12,5 @@ $factory->define(Post::class, function (Faker $faker) {
         'title' => $faker->sentence($nbWords = 6, $variableNbWords = true),
         'description' => $faker->paragraph($nbSentences = 3, $variableNbSentences = true),
         'user_id' => User::all()->random()->id,
-        // 'img_id' => Image::all()->random()->id
     ];
 });

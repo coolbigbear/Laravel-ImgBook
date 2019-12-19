@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Profanity;
 use App\Comment;
-use App\Image;
 use App\Post;
 
 class PostController extends Controller
