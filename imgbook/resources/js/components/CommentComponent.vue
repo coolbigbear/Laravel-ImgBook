@@ -78,7 +78,7 @@
                 .then(response => {
                     //success
                     this.fetchComments();
-                    this.success = response.message;
+                    this.success = response.data.message;
                 })
                 .catch(error => {
                     //failure

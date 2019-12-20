@@ -1919,7 +1919,7 @@ __webpack_require__.r(__webpack_exports__);
         //success
         _this2.fetchComments();
 
-        _this2.success = response.message;
+        _this2.success = response.data.message;
       })["catch"](function (error) {
         //failure
         _this2.error = error.response.data.error;
@@ -37469,7 +37469,7 @@ var render = function() {
                         staticClass: "btn btn-danger pull-right",
                         on: {
                           click: function($event) {
-                            return _vm.editCommentButton(comment)
+                            return _vm.deleteComment(comment)
                           }
                         }
                       },

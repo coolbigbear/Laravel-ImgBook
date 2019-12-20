@@ -76,7 +76,8 @@ class PostController extends Controller
             $errors = array(
                 'message' => 'Profanity detected'
             );
-            return view('posts.create', ['update' => False])->withErrors($errors);
+            $tags = Tag::All();
+            return view('posts.create', ['update' => False, 'tags' => $tags])->withErrors($errors);
         }
 
         $image = $validatedData['image'];
