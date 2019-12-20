@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Profanity;
 use App\Comment;
 use App\Post;
+use App\Tag;
 
 class PostController extends Controller
 {
@@ -17,6 +18,7 @@ class PostController extends Controller
             'title' => 'required|max:255',
             'image' => 'required|image|mimes:jpeg,png,jpg',
             'description' => 'nullable|max:500',
+            'checkbox' => 'nullable',
         ]);
     }
 
@@ -24,6 +26,7 @@ class PostController extends Controller
         return $validatedData = $request->validate([
             'title' => 'required|max:255',
             'description' => 'nullable|max:500',
+            'checkbox' => 'nullable',
         ]);
     }
 
@@ -46,7 +49,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('posts.create', ['update' => false]);
+        $tags = Tag::orderBy('tag', 'asc')->get();
+        return view('posts.create', ['update' => false, 'tags' => $tags]);
     }
 
     /**
@@ -58,7 +62,7 @@ class PostController extends Controller
     public function store(Request $request, Profanity $p)
     {
         $validatedData = $this->validateRequest($request);
-        
+
         $profanity = $p->checkProfanity($validatedData['title'].$validatedData['description']);
 
         $profanity = (string) $profanity->getBody();
@@ -76,19 +80,29 @@ class PostController extends Controller
         }
 
         $image = $validatedData['image'];
+        $tags = [];
 
+        if (sizeOf($validatedData['checkbox']) != 0) {
+            $checkboxes = $validatedData['checkbox'];
+            for ($i=0; $i < 10; $i++) { 
+                if(array_key_exists($i, $checkboxes)) {
+                    array_push($tags, $i);
+                }
+                
+            }
+        }
+        
         $a = new Post;
         $a->title = $validatedData['title'];
         $a->description = $validatedData['description'];
         $a->user_id = Auth::user()->id;
+        $a->tags()->attach($tags);   
         $a->save();
 
         \App::call('App\Http\Controllers\ImageController@store', ['image' => $image, 'post_id' => $a->id]);
 
         session()->flash('message', 'Post created');
-
         return redirect()->route('posts.index');
-
     }
 
     /**
@@ -115,8 +129,9 @@ class PostController extends Controller
     public function edit(Request $request, $id)
     {
         $post = Post::findOrFail($id);
+        $tags = Tag::All();
         if($post->user_id == Auth::user()->id) {
-            return view('posts.create', ['update' => true, 'post' => $post]);
+            return view('posts.create', ['update' => true, 'post' => $post, 'tags' => $tags]);
         } else {
             
             session()->flash('message', 'Unauthorized');
@@ -153,8 +168,22 @@ class PostController extends Controller
             return view('posts.create', ['update' => true, 'post' => $post])->withErrors($errors);
         }
 
+        $tags = [];
+
+        if (isset($request['checkbox'])) {
+            $checkboxes = $request['checkbox'];
+            for ($i=0; $i < 10; $i++) { 
+                if(array_key_exists($i, $checkboxes)) {
+                    array_push($tags, $i);
+                }
+                
+            }
+        }
+
         $post->title = $request['title'];
         $post->description = $request['description'];
+        $post->tags()->detach();
+        $post->tags()->attach($tags);
         $post->save();
         $userId = Auth::user()->id;
 

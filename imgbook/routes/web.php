@@ -30,13 +30,13 @@ Route::get('posts', 'PostController@index')
     ->name('posts.index');
 
 Route::get('posts/create', 'PostController@create')
-    ->name('posts.create');
+    ->name('posts.create')->middleware('auth');
 
 Route::get('posts/edit/{id}', 'PostController@edit')
     ->name('posts.edit')->middleware('auth');
 
 Route::post('posts', 'PostController@store')
-    ->name('posts.store');
+    ->name('posts.store')->middleware('auth');
 
 Route::get('/posts/{id}', 'PostController@show')
     ->name('posts.show')->middleware('auth');
@@ -46,7 +46,7 @@ Route::delete('/posts/{user_id}/{id}', 'PostController@destroy')
 
 //Comments
 Route::get('comments/{id}', 'CommentController@apiIndexByPost')
-    ->name('api.comments.index.post');
+    ->name('api.comments.index.post')->middleware('auth');
     
 Route::post('comments', 'CommentController@apiStore')
     ->name('api.comments.store')->middleware('auth');
