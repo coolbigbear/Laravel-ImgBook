@@ -33,6 +33,8 @@
                             <button class="btn btn-primary" type="submit">Edit</button>
                         </form>
                     </div>
+                    @endif
+                    @if ($post->user_id == Auth::user()->id || Auth::user()->type == 'admin')
                     <div class="col-md-auto">
                         <form method="POST"
                             action="{{ route('posts.destroy', ['user_id' => Auth::user()->id, 'id' => $post->id]) }}">

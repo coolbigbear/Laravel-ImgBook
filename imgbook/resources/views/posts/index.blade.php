@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @section('title', 'Posts')
-
+@section('back')
+<small class="text-muted">Logged in as: {{ Auth::user()->username }}</small>
+@endsection
 @section('content')
 <div class="row justify-content-center">
     <div class=" col-md-8">
