@@ -82,7 +82,7 @@ class PostController extends Controller
         $image = $validatedData['image'];
         $tags = [];
 
-        if (sizeOf($validatedData['checkbox']) != 0) {
+        if (isset($validatedData['checkbox'])) {
             $checkboxes = $validatedData['checkbox'];
             for ($i=0; $i < 10; $i++) { 
                 if(array_key_exists($i, $checkboxes)) {
@@ -96,8 +96,10 @@ class PostController extends Controller
         $a->title = $validatedData['title'];
         $a->description = $validatedData['description'];
         $a->user_id = Auth::user()->id;
-        $a->tags()->attach($tags);   
         $a->save();
+
+        $post = Post::findOrFail($a)->last();
+        $post->tags()->attach($tags);   
 
         \App::call('App\Http\Controllers\ImageController@store', ['image' => $image, 'post_id' => $a->id]);
 
@@ -176,7 +178,6 @@ class PostController extends Controller
                 if(array_key_exists($i, $checkboxes)) {
                     array_push($tags, $i);
                 }
-                
             }
         }
 
@@ -201,7 +202,7 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($id);
 
-        if($post->user_id == $userId) {
+        if($post->user_id == $userId || Auth::user()->type == 'admin') {
             $post->delete();
             return redirect()->route('posts.index')->with('message', 'Post Deleted');
         }

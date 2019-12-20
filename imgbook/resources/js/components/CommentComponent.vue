@@ -4,6 +4,9 @@
             <div class="alert alert-danger" v-if="error">
                 <strong>Error</strong> {{error}}
             </div>
+            <div class="alert alert-success" v-if="success">
+                <strong>Success</strong> {{success}}
+            </div>
             <label><b>{{ commentMessage }}</b></label>
             <div class="input-group">
                 <input type="textarea" name="text" class="form-control" placeholder="Enter a comment" v-model="newComment">
@@ -22,6 +25,8 @@
                     </div>
                     <div class="col-md-auto">
                         <button class="btn btn-primary pull-right" id="editButton" v-if="comment.user.id == userId" @click="editCommentButton(comment)">Edit</button>
+                        <button class="btn btn-danger pull-right" v-if="comment.user.id == userId" @click="deleteComment(comment)">Delete</button>
+                        <button class="btn btn-danger pull-right" v-else-if="userType == admin" @click="deleteComment(comment)">Delete</button>
                     </div>
                 </div>
             </div>
@@ -31,11 +36,13 @@
 
 <script type="application/javascript">
     export default {
-        props: ['postId', 'userId'],
+        props: ['postId', 'userId', 'userType'],
         data() {
             return {
                 comments: [],
                 error: '',
+                success: '',
+                admin: 'admin',
                 newComment: '',
                 commentMessage: 'Post a comment',
                 changeOrPost: 'Post',
@@ -43,7 +50,7 @@
             }
         },
         mounted() {
-            this.fetchComments()
+            this.fetchComments();
         },
         methods: {
             fetchComments: function() {
@@ -65,6 +72,18 @@
                 } else {
                     this.putComment();
                 }
+            },
+            deleteComment: function (comment) {
+                 axios.delete("/comment/" + comment.id + "/" + this.postId)
+                .then(response => {
+                    //success
+                    this.fetchComments();
+                    this.success = response.message;
+                })
+                .catch(error => {
+                    //failure
+                    this.error = error.response.data.error;
+                })
             },
             postComment: function () {
                 axios.post("/comments", {

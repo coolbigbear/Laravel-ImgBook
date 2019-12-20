@@ -46,7 +46,10 @@
                     @endif
                 </div>
                 <p class="card-text">{{ $post->description }}</p>
-                <comment-component :post-id={{$post->id}} :user-id={{Auth::user()->id}}></comment-component>
+                <comment-component :post-id={{$post->id}} 
+                                :user-id={{Auth::user()->id}} 
+                                :user-type={{ json_encode(Auth::user()->type) }}>
+                </comment-component>
             </div>
         </div>
     </div>

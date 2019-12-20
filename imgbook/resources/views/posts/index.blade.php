@@ -2,7 +2,9 @@
 
 @section('title', 'Posts')
 @section('back')
-<small class="text-muted">Logged in as: {{ Auth::user()->username }}</small>
+@auth
+    <small class="text-muted">Logged in as: {{ Auth::user()->username }}</small>
+@endauth
 @endsection
 @section('content')
 <div class="row justify-content-center">

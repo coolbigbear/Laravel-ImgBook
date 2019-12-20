@@ -54,4 +54,5 @@ Route::post('comments', 'CommentController@apiStore')
 Route::put('comments/{id}', 'CommentController@update')
     ->name('comments.update')->middleware('auth');
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::delete('comment/{id}/{post_id}', 'CommentController@apiDestroy')
+    ->name('api.comment.destroy')->middleware('auth');

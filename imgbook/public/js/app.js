@@ -1869,12 +1869,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['postId', 'userId'],
+  props: ['postId', 'userId', 'userType'],
   data: function data() {
     return {
       comments: [],
       error: '',
+      success: '',
+      admin: 'admin',
       newComment: '',
       commentMessage: 'Post a comment',
       changeOrPost: 'Post',
@@ -1905,8 +1912,21 @@ __webpack_require__.r(__webpack_exports__);
         this.putComment();
       }
     },
-    postComment: function postComment() {
+    deleteComment: function deleteComment(comment) {
       var _this2 = this;
+
+      axios["delete"]("/comment/" + comment.id + "/" + this.postId).then(function (response) {
+        //success
+        _this2.fetchComments();
+
+        _this2.success = response.message;
+      })["catch"](function (error) {
+        //failure
+        _this2.error = error.response.data.error;
+      });
+    },
+    postComment: function postComment() {
+      var _this3 = this;
 
       axios.post("/comments", {
         text: this.newComment,
@@ -1914,13 +1934,13 @@ __webpack_require__.r(__webpack_exports__);
         user_id: this.userId
       }).then(function (response) {
         //success
-        _this2.comments.unshift(response.data);
+        _this3.comments.unshift(response.data);
 
-        _this2.newComment = '';
-        _this2.error = '';
+        _this3.newComment = '';
+        _this3.error = '';
       })["catch"](function (error) {
         //failure
-        _this2.error = error.response.data.error;
+        _this3.error = error.response.data.error;
       });
     },
     editCommentButton: function editCommentButton(comment) {
@@ -1930,21 +1950,21 @@ __webpack_require__.r(__webpack_exports__);
       this.commentIdBeingEdited = comment;
     },
     putComment: function putComment() {
-      var _this3 = this;
+      var _this4 = this;
 
       axios.put("/comments/" + this.commentIdBeingEdited.id, {
         text: this.newComment
       }).then(function (response) {
         //success
-        _this3.fetchComments();
+        _this4.fetchComments();
 
-        _this3.commentMessage = "Post a comment";
-        _this3.changeOrPost = "Post";
-        _this3.commentIdBeingEdited = null;
-        _this3.error = '';
+        _this4.commentMessage = "Post a comment";
+        _this4.changeOrPost = "Post";
+        _this4.commentIdBeingEdited = null;
+        _this4.error = '';
       })["catch"](function (error) {
         //failure
-        _this3.error = error.response.data.error;
+        _this4.error = error.response.data.error;
       });
     }
   }
@@ -37356,6 +37376,13 @@ var render = function() {
             ])
           : _vm._e(),
         _vm._v(" "),
+        _vm.success
+          ? _c("div", { staticClass: "alert alert-success" }, [
+              _c("strong", [_vm._v("Success")]),
+              _vm._v(" " + _vm._s(_vm.success) + "\n        ")
+            ])
+          : _vm._e(),
+        _vm._v(" "),
         _c("label", [_c("b", [_vm._v(_vm._s(_vm.commentMessage))])]),
         _vm._v(" "),
         _c("div", { staticClass: "input-group" }, [
@@ -37432,6 +37459,34 @@ var render = function() {
                         }
                       },
                       [_vm._v("Edit")]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                comment.user.id == _vm.userId
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-danger pull-right",
+                        on: {
+                          click: function($event) {
+                            return _vm.editCommentButton(comment)
+                          }
+                        }
+                      },
+                      [_vm._v("Delete")]
+                    )
+                  : _vm.userType == _vm.admin
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-danger pull-right",
+                        on: {
+                          click: function($event) {
+                            return _vm.deleteComment(comment)
+                          }
+                        }
+                      },
+                      [_vm._v("Delete")]
                     )
                   : _vm._e()
               ])

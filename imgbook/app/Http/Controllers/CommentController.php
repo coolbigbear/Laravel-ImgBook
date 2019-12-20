@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 use App\Profanity;
 use App\Comment;
@@ -148,8 +149,19 @@ class CommentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function apiDestroy($id, $post_id)
     {
-        //
+        $comment = Comment::findOrFail($id);
+        $post = Post::findOrFail($post_id);
+        
+        if($comment->user_id == (Auth::user()->id) || Auth::user()->type == 'admin') {
+            $comment->delete();
+            $message = array(
+                'message' => 'Comment deleted'
+            );
+            return response($message,200);
+        }
+
+        return redirect()->route('posts.index')->with('message', 'Unauthorized to delete');
     }
 }
